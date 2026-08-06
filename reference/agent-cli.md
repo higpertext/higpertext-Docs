@@ -121,7 +121,5 @@ htx profile load mi_perfil --assistant claude
 
 ## Ver también
 
-- [Creación de Agentes](../03-extending/agent-development.md) — guía paso a paso
-- [Hooks de Agente](../03-extending/agent-hooks.md) — sistema de hooks por capas
-- [Perfiles — Referencia](../04-reference/profiles-catalog.md) — catálogo de perfiles
-<!-- higpertext:generated-by=common.docs-sync -->
+- [Perfiles — Referencia](profiles-catalog.md) — catálogo de perfiles
+- [Catálogo de Capacidades](capabilities-catalog.md) — capacidades disponibles por área

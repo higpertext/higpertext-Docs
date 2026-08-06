@@ -4,7 +4,7 @@
 **Versión**: 1.0.0
 
 ## Propósito
-Genera un reporte Markdown explicativo del roadmap: progreso por fase, lógica del trabajo, skills y subagents usados, commits relacionados y cambios de código. Al listar roadmaps completados se actualiza automáticamente.
+Genera un reporte explicativo del roadmap activo: progreso por fase, skills y subagents usados, y timeline HTML visual. Se puede invocar al completar cada fase via /plan.
 
 **Entrypoint**: `capabilities/common/scripts/core/reports/roadmap_report.py`
 **Lenguaje**: `python`
@@ -14,8 +14,13 @@ Genera un reporte Markdown explicativo del roadmap: progreso por fase, lógica d
 | Parámetro | Requerido | Descripción |
 |---|---|---|
 | `--roadmap` | No | Path al archivo roadmap JSON. Default: roadmap activo en .higpertext/config/roadmaps/. |
-| `--commit-range` | No | Rango Git exacto a documentar, por ejemplo `HEAD~10..HEAD`. |
 | `--output` | No | Ruta de salida del reporte. Default: .higpertext/reports/roadmap/<roadmap-id>_report.<ext>. |
+| `--commit-range` | No | Rango Git exacto a documentar, por ejemplo `HEAD~5..HEAD`. |
+| `--verify` | No | Ejecuta el arnés de evaluación estático y de hooks e incorpora su resultado al reporte. |
+| `--agent-validation-summary` | No | Resumen corto de la validación del agente que cierra la tarea. Se persiste en el roadmap JSON (acumulativo). |
+| `--agent-validation-file` | No | Path a un archivo con el texto de validación, para resúmenes largos. Alternativa a `--agent-validation-summary`. |
+| `--agent-validation-verdict` | No | `PASS` \| `CONCERNS` \| `FAIL`. Default: `PASS`. |
+| `--agent-name` | No | Identifica al agente que registra la validación. Default: `Claude Sonnet 5`. |
 
 ## Contrato Técnico (Reglas)
 
@@ -23,7 +28,8 @@ Genera un reporte Markdown explicativo del roadmap: progreso por fase, lógica d
 - Debe mostrar resumen ejecutivo en lenguaje natural con % de completitud.
 - Debe mostrar todas las fases con su status (done/active/pending) e iconos visuales.
 - Debe listar skills y subagents por fase y totales.
-- Debe listar commits relacionados con hash, fecha, mensaje y diff completo.
-- Debe generar únicamente Markdown.
+- Debe generar HTML con barra de progreso y timeline coloreado por status.
+- La validación del agente se persiste en el roadmap JSON fuente, no solo en el markdown generado — se acumula entre corridas, nunca se sobreescribe.
+- El cierre efectivo de una fase (status=done) NO ocurre aquí — es responsabilidad exclusiva de `common.roadmap-phase-close`, gateada por el reviewer.
 - Debe completar con [SUCCESS] o [ERROR] explícito.
 <!-- higpertext:generated-by=common.docs-sync -->

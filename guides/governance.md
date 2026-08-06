@@ -109,8 +109,6 @@ htx task guidelines-sync --source ./mis-lineamientos/
 htx workflow run guidelines-sync --source https://github.com/mi-org/governance.git
 ```
 
-Ver guía completa: [Gobernanza Personalizada](custom-guidelines.md)
-
 ---
 
 [Volver al Índice](../README.md)

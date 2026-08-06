@@ -6,7 +6,7 @@
 ## Propósito
 Consulta la base de conocimiento de Gobernanza y Minutas para resolver dudas sobre normas y decisiones previas.
 
-**Entrypoint**: `capabilities/common/scripts/core/ask_htx.py`
+**Entrypoint**: `capabilities/common/scripts/core/governance/ask_higpertext.py`
 **Lenguaje**: `python`
 
 ## Parámetros

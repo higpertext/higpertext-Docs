@@ -215,8 +215,6 @@ Para ver el historial de sesiones y productividad:
 htx task common.telemetry-report --days 7
 ```
 
-Ver referencia completa: [Telemetría](../reference/telemetry.md)
-
 ---
 
 [Volver al Índice](../README.md)

@@ -1,4 +1,4 @@
-<!-- higpertext:generated-by=common.docs-sync -->
+<!-- higpertext:generated-by=docs-maintenance -->
 # Guía de Hooks — Para el Agente y el Usuario
 
 Los hooks de higpertext actúan como un **guardia inteligente** entre el agente IA
@@ -65,7 +65,7 @@ git add           # staging — parte del flujo del committer
 Los hooks se despliegan automáticamente al cargar un perfil:
 
 ```bash
-htx profile load software_developer --assistant claude
+htx profile load base_developer --assistant claude
 ```
 
 Esto copia los scripts de hook a `.claude/hooks/` y actualiza `.claude/settings.json`.

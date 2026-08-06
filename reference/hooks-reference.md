@@ -1,4 +1,4 @@
-<!-- higpertext:generated-by=common.docs-sync -->
+<!-- higpertext:generated-by=docs-maintenance -->
 # Referencia de Hooks — higpertext Engine
 
 Documentación técnica del sistema de hooks: arquitectura, flujo de ejecución,

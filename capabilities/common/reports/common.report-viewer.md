@@ -1,23 +1,21 @@
 # Capability: `common.report-viewer`
 
-**Nombre**: Visualizador de Reportes Premium
+**Nombre**: Catálogo de Reportes
 **Versión**: 1.0.0
 
 ## Propósito
-Compila la telemetría, el diario de decisiones de diseño y el análisis de desviación en un dashboard HTML autoportante interactivo.
+Muestra en terminal los reportes persistidos e indexados por higpertext.
 
 **Entrypoint**: `capabilities/common/scripts/core/reports/report_viewer.py`
 **Lenguaje**: `python`
 
 ## Parámetros
 
-| Parámetro | Requerido | Descripción |
-|---|---|---|
-| `--output` | No | Ruta de destino del dashboard HTML resultante. |
+Esta capacidad no requiere parámetros.
 
 ## Contrato Técnico (Reglas)
 
-- Debe consolidar todos los reportes Markdown generados por higpertext en una sola estructura unificada.
-- Usa el motor common.html-presentation para compilar el HTML final.
-- Debe copiar los assets necesarios (JS/CSS) de manera portable al directorio del reporte.
+- Debe leer el índice de OutputStore como fuente de verdad.
+- Debe listar en terminal únicamente reportes existentes, con su ruta, tamaño y fecha.
+- No debe generar HTML ni escribir archivos.
 <!-- higpertext:generated-by=common.docs-sync -->

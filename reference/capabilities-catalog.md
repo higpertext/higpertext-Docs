@@ -1,9 +1,9 @@
-<!-- higpertext:generated-by=common.docs-sync -->
+<!-- higpertext:generated-by=docs-maintenance -->
 # Catálogo de Capacidades
 
 Referencia técnica exhaustiva de cada capacidad del higpertext Engine.
 
-**Total**: 54 capacidades | **Áreas**: `common`, `git`, `security`
+**Total**: 53 capacidades | **Áreas**: `common`, `git`, `security`
 
 ---
 
@@ -197,19 +197,6 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Patrón: `\bpip\s+(install|uninstall|freeze)\b`
   - Acción: Gestionar dependencias del proyecto
   - Comando correcto: `htx task common.dep-manager --action install --packages requests`
-
----
-
-### `common.docs-sync`
-**Propósito**: Analiza recursivamente todas las capacidades y perfiles JSON, y regenera los documentos de docs/ que el equipo marcó como gestionados (capabilities-catalog.md, profiles-catalog.md, hooks-reference.md, hooks-guide.md, capability-development.md, governance-reference.md y README.md).
-
-- **Entrypoint**: `capabilities/common/scripts/core/system/docs_sync.py`
-- **Parámetros**: No requiere parámetros.
-- **Contrato técnico**:
-  - Solo debe reescribir archivos que contengan el marcador 'higpertext:generated-by=common.docs-sync'; nunca debe crear documentos nuevos ni tocar archivos sin marcar.
-  - Debe actualizar docs/reference/capabilities-catalog.md con todas las capacidades encontradas en src/higpertext/capabilities/.
-  - Debe actualizar docs/reference/profiles-catalog.md con todos los perfiles de agente encontrados en src/config/profiles/.
-  - La versión del motor mostrada en los documentos debe leerse de pyproject.toml, nunca estar hardcodeada.
 
 ---
 
