@@ -8,28 +8,15 @@ intercepción de comandos bash y cómo extender las reglas.
 
 ## Arquitectura del Sistema de Hooks
 
-```
-Usuario / Agente IA
-       │
-       │  tool_call: Bash(command="git status")
-       ▼
-┌─────────────────────┐
-│  Claude Code / IDE  │
-│   PreToolUse hook   │──── stdin (JSON) ───▶ higpertext_enforcer.py
-└─────────────────────┘                              │
-                                           Lee bash_intercept
-                                        de cada capability JSON
-                                                      │
-                              ┌───────────────────────┴──────────────────────┐
-                              │ ¿coincide algún patrón?                       │
-                              │                                               │
-                           SÍ │                                            NO │
-                              ▼                                               ▼
-                 continue:true + additionalContext            continue:true (pasa)
-                 (feedback al modelo, no corta el turno)
-                              │
-                 Modelo recibe feedback y auto-corrige
-                 usando la capacidad higpertext correcta
+```mermaid
+flowchart TD
+    A["Usuario / Agente IA<br/>tool_call: Bash(command='git status')"] --> B["Claude Code / IDE<br/>PreToolUse hook"]
+    B -- "stdin (JSON)" --> C[higpertext_enforcer.py]
+    C --> D["Lee bash_intercept<br/>de cada capability JSON"]
+    D --> E{"¿Coincide algún patrón?"}
+    E -- "SÍ" --> F["continue: true + additionalContext<br/>(feedback al modelo, no corta el turno)"]
+    E -- "NO" --> G["continue: true (pasa)"]
+    F --> H["Modelo recibe feedback y auto-corrige<br/>usando la capacidad higpertext correcta"]
 ```
 
 ---
@@ -72,16 +59,12 @@ todos los `*.json` de capacidades y extrae el campo `bash_intercept`:
 ```
 
 **Flujo de carga**:
-```
-higpertext_enforcer.py arranca
-       │
-       └─ _find_capabilities_root()  → localiza src/capabilities/
-              │
-              └─ rglob("*.json")  → itera todos los JSONs
-                     │
-                     └─ extrae bash_intercept.{pattern, description, example}
-                            │
-                            └─ construye lista de reglas en memoria
+```mermaid
+flowchart TD
+    A["higpertext_enforcer.py arranca"] --> B["_find_capabilities_root()<br/>→ localiza src/capabilities/"]
+    B --> C["rglob('*.json')<br/>→ itera todos los JSONs"]
+    C --> D["extrae bash_intercept.{pattern, description, example}"]
+    D --> E["construye lista de reglas en memoria"]
 ```
 
 **Ventaja**: agregar una nueva capacidad con `bash_intercept` activa

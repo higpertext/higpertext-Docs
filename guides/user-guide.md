@@ -1,6 +1,6 @@
 # Guía de Usuario Extendida - higpertext Engine
 
-El `htx` es el orquestador central (Hub) diseñado para el laboratorio DevSecOps. Esta guía cubre desde la configuración inicial hasta flujos de trabajo avanzados.
+El `htx` es el orquestador central (Hub) del higpertext Engine, usado para construir y gestionar agentes de IA (por ejemplo, vía el perfil `agent_designer`). Esta guía cubre desde la configuración inicial hasta flujos de trabajo avanzados.
 
 ---
 
@@ -19,7 +19,7 @@ GITHUB_TOKEN=tu_token_opcional
 
 ### Entornos Virtuales (`.venv`)
 Cada capacidad puede tener su propio entorno. Si una tarea falla por falta de librerías:
-1. Ve a `app/LLM-Agentes/capabilities/[area]/scripts/`
+1. Ve a `app/<Tu Repositorio>/capabilities/[area]/scripts/`
 2. Crea el venv: `python -m venv .venv`
 3. Activa e instala: `pip install -r requirements.txt`
 higpertext detectará el `.venv` y lo usará automáticamente.
@@ -62,13 +62,13 @@ htx init --assistant gemini --target "~/Documents/MiAppCliente"
 Una vez inicializado el proyecto para el asistente requerido, este comando inyecta el "cerebro" y los permisos específicos de un rol en el asistente. Soporta de igual forma `~/` en `--target`.
 
 ```powershell
-# Asignar rol DevSecOps al proyecto destino para Gemini
-htx profile load devsecops --assistant gemini --target "~/Documents/MiAppCliente"
+# Asignar rol Agent Designer al proyecto destino para Claude
+htx profile load agent_designer --assistant claude --target "~/Documents/agent-designer"
 ```
 
 **Control Estricto de Gobernanza y Acumulación Multitarea**:
 1. **Validación de Asistente**: Si intentas cargar un perfil para un asistente que no está registrado en la lista de `"assistants"` de `environment.json`, higpertext bloqueará de inmediato la operación por seguridad y te indicará el comando exacto para autorizarlo (`htx init --assistant <nombre>`).
-2. **Perfiles Acumulativos**: Cada vez que ejecutas exitosamente `profile load` para un nuevo rol (ej. `sre`, `ado_admin`), higpertext lo añade a una lista acumulativa `"active_profiles": ["devsecops", "sre"]` en `environment.json`, resguardando permanentemente la trazabilidad de todos los roles asignados a tu proyecto.
+2. **Perfiles Acumulativos**: Cada vez que ejecutas exitosamente `profile load` para un nuevo rol (ej. `agent_designer`, `ado_admin`), higpertext lo añade a una lista acumulativa `"active_profiles": ["agent_designer", "ado_admin"]` en `environment.json`, resguardando permanentemente la trazabilidad de todos los roles asignados a tu proyecto.
 3. **Subcarpeta Estandarizada `agents/`**: Las reglas del rol, el *system prompt*, los contratos técnicos y las directivas de ahorro de tokens se inyectan limpiamente dentro de una subcarpeta estandarizada según el entorno:
    - Gemini: `.gemini/agents/<perfil>.agent.md`
    - Claude: `.claude/agents/<perfil>.md` (y su respectiva copia en `.clauderules`)
@@ -135,9 +135,11 @@ Cada perfil JSON declara sus recursos de sesión en los campos `session_skills` 
 |---|---|---|
 | `pwsh_engineer` | `cross-cutting-powershell-standards`, `testing-pester-testing` | `test-engineer` |
 | `ado_admin` | — | `ado-pipeline-guardian`, `architect` |
-| `devsecops` | — | `architect`, `docs-curator`, `migration-reviewer` |
+| `agent_designer` | `best-practices` | — |
 | `sre` | — | `ado-pipeline-guardian`, `architect` |
 | `agents_architect` | — | todos los subagents disponibles |
+
+> Perfiles privados de proyectos específicos no se listan aquí — cada agente documenta sus propios `session_skills`/`session_subagents` en su repositorio.
 
 ### Estado de los comandos según sesión
 

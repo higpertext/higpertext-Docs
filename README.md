@@ -1,7 +1,9 @@
 <!-- higpertext:generated-by=docs-maintenance -->
 # Documentación — higpertext Engine v0.8.5
 
-Framework de orquestación de agentes IA para DevSecOps.
+Framework de orquestación de agentes IA. Incluye el perfil `agent_designer`, un
+super-asistente que guía la creación, gobernanza, activación y cambio entre
+agentes propios.
 **53** capacidades · **6** perfiles · **8** hook intercepts activos
 
 ---
@@ -51,11 +53,13 @@ Ficha individual por cada una de las 53 capacidades, agrupadas por área.
 ## Inicio rápido
 
 ```bash
-# 1. Entorno
+# 1. Clonar el repositorio del motor e instalar
+git clone git@github.com:Angel-Ortega-SRE-Proyects/higpertext-cli.git
+cd higpertext-cli
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 2. Inicializar asistente
+# 2. Inicializar asistente en tu proyecto
 htx init --assistant claude
 
 # 3. Cargar perfil
@@ -67,6 +71,28 @@ htx task common.higpertext-tester
 # 5. Ejecutar una tarea
 htx task common.quality-resolver --report code_quality_report.md
 ```
+
+### ¿Quieres crear tu propio agente?
+
+El perfil `agent_designer` es un super-asistente dedicado a acompañarte de punta a
+punta: levantar requerimientos, generar el scaffolding, definir perfil y
+capabilities con gobernanza, registrar el agente y activarlo.
+
+```bash
+# Cargar el Agent Designer en el proyecto donde vas a construir tu agente
+htx profile load agent_designer --assistant claude
+
+# Crear el scaffolding de tu nuevo agente guiado por el Agent Designer
+htx task common.agent-builder \
+  --profile mi_perfil \
+  --target ../mi-agente \
+  --description "Descripción de mi agente"
+```
+
+A partir de ahí, describe en el chat qué necesitas: el Agent Designer guía el resto
+del flujo (perfil → capabilities → hooks → registro → activación). Ver
+[Guía de usuario](guides/user-guide.md) y el catálogo de
+[perfiles](reference/profiles-catalog.md).
 
 ---
 
