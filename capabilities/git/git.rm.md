@@ -24,7 +24,7 @@ Remueve archivos del índice git (git rm --cached) sin eliminarlos del sistema d
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bgit\s+rm\b`
+- **Comando Bash equivalente**: `git rm <archivo>`
 - **Descripción**: Remover archivos del índice git
-- **Ejemplo de reemplazo**: `htx task git.git-rm --files "<archivo1,archivo2>"`
+- **Ejemplo de reemplazo**: `htx task git.rm --files "<archivo1,archivo2>"`
 <!-- higpertext:generated-by=common.docs-sync -->

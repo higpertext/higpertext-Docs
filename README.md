@@ -1,128 +1,57 @@
-<!-- higpertext:generated-by=docs-maintenance -->
-# Documentación — higpertext Engine v0.8.5
+# higpertext Engine — documentación
 
-Framework de orquestación de agentes IA. Incluye el perfil `agent_designer`, un
-super-asistente que guía la creación, gobernanza, activación y cambio entre
-agentes propios.
-**53** capacidades · **6** perfiles · **8** hook intercepts activos
+higpertext es un **motor de orquestación**: prepara un proyecto para un asistente de IA, carga un perfil y le entrega capacidades, reglas, hooks y recursos de sesión. No contiene la lógica de negocio de tu producto. Esa lógica vive en tu repositorio o en un **agente externo** creado con el motor.
 
----
+## Empieza aquí
 
-## Primeros pasos (`getting-started/`)
-
-| Doc | Contenido |
-|---|---|
-| [Instalación](getting-started/installation.md) | Requisitos, `.venv`, `.env` |
-| [Primer arranque](getting-started/first-run.md) | `init`, `profile load`, `session-start` |
-| [Conceptos clave](getting-started/concepts.md) | Perfiles, capacidades, hooks, sesiones |
-
----
-
-## Guías de uso (`guides/`)
-
-| Doc | Contenido |
-|---|---|
-| [Guía de usuario](guides/user-guide.md) | Uso general del CLI |
-| [Sesiones de Desarrollo](guides/sessions.md) | Ciclo de vida de sesiones, skills y subagentes |
-| [Hooks — Guía de uso](guides/hooks-guide.md) | Qué interceptan los hooks y por qué existen |
-| [Gobernanza](guides/governance.md) | Lineamientos obligatorios: PRs, seguridad, deployments |
-| [Memoria del Agente](guides/agent-memory.md) | Cómo persiste y consulta el historial de acciones |
-| [FAQ](guides/faq.md) | Portabilidad, entornos virtuales, secretos |
-
----
-
-## Referencia técnica (`reference/`)
-
-Especificaciones exhaustivas — qué existe y cómo funciona.
-
-| Doc | Contenido |
-|---|---|
-| [Referencia del CLI](reference/agent-cli.md) | Comandos `htx` disponibles |
-| [Catálogo de Capacidades](reference/capabilities-catalog.md) | 53 capacidades con parámetros, contratos y hook intercepts |
-| [Catálogo de Perfiles](reference/profiles-catalog.md) | 6 perfiles con capacidades y recursos de sesión |
-| [Hooks — Referencia técnica](reference/hooks-reference.md) | Arquitectura de hooks, reglas dinámicas, cómo extender |
-
----
-
-## Capacidades (`capabilities/`)
-
-Ficha individual por cada una de las 53 capacidades, agrupadas por área.
-
----
-
-## Inicio rápido
+Con un ambiente inicializado y un perfil cargado ya puedes empezar a trabajar con el asistente:
 
 ```bash
-# 1. Clonar el repositorio del motor e instalar
-git clone git@github.com:Angel-Ortega-SRE-Proyects/higpertext-cli.git
-cd higpertext-cli
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+# 1. Desde la raíz de tu proyecto
+htx init --assistant codex
 
-# 2. Inicializar asistente en tu proyecto
-htx init --assistant claude
+# 2. Carga un rol incluido en el motor
+htx profile load base_developer --assistant codex
 
-# 3. Cargar perfil
-htx profile load base_developer --assistant claude
-
-# 4. Verificar integridad
-htx task common.higpertext-tester
-
-# 5. Ejecutar una tarea
-htx task common.quality-resolver --report code_quality_report.md
+# 3. Consulta o ejecuta una capacidad
+htx task common.list-rules
+htx task common.project-explainer --action explain --target_path .
 ```
 
-### ¿Quieres crear tu propio agente?
+Usa `claude`, `gemini`, `opencode`, `copilot`, `antigravity` o `codex` según el asistente que vayas a integrar. El flujo completo está en [Primer arranque](getting-started/first-run.md).
 
-El perfil `agent_designer` es un super-asistente dedicado a acompañarte de punta a
-punta: levantar requerimientos, generar el scaffolding, definir perfil y
-capabilities con gobernanza, registrar el agente y activarlo.
+## Guías de inicio
 
-```bash
-# Cargar el Agent Designer en el proyecto donde vas a construir tu agente
-htx profile load agent_designer --assistant claude
+| Documento | Para qué sirve |
+|---|---|
+| [Instalación](getting-started/installation.md) | Instalar y verificar `htx` |
+| [Primer arranque](getting-started/first-run.md) | Inicializar, cargar un perfil y comenzar |
+| [Conceptos clave](getting-started/concepts.md) | Entender motor, proyecto, perfil, tarea y sesión |
+| [Trabajar con agentes externos](getting-started/external-agents.md) | Crear, registrar y distribuir un agente que contiene tu lógica |
 
-# Crear el scaffolding de tu nuevo agente guiado por el Agent Designer
-htx task common.agent-builder \
-  --profile mi_perfil \
-  --target ../mi-agente \
-  --description "Descripción de mi agente"
-```
+## Encuentra lo que necesitas hacer
 
-A partir de ahí, describe en el chat qué necesitas: el Agent Designer guía el resto
-del flujo (perfil → capabilities → hooks → registro → activación). Ver
-[Guía de usuario](guides/user-guide.md) y el catálogo de
-[perfiles](reference/profiles-catalog.md).
+| Si necesitas… | Empieza por… |
+|---|---|
+| Entender un proyecto | `common.project-explainer`, `common.file-map` |
+| Buscar código o documentación | `common.search-router`, `common.grep-search`, `common.semantic-search` |
+| Investigar un error | `common.error-context-locator`, `common.smart-read` |
+| Preparar contexto para una tarea | `common.context-assembler` |
+| Crear o mantener un agente externo | `common.agent-builder`, `common.agent-sync`, `common.agent-bootstrap` |
+| Revisar el estado de hooks o del workspace | `common.doctor`, `common.hook-health` |
+| Gestionar secretos de proveedores LLM | `security.secret-set` |
 
----
+Consulta el [mapa de capacidades](capabilities/walkhrough.md) para elegir por objetivo, y el [catálogo técnico](reference/capabilities-catalog.md) para parámetros y contratos.
 
-## Mapa de la documentación
+## Referencia
 
-```
-docs/external/
-├── README.md                  ← este archivo
-├── getting-started/           ← empieza aquí
-│   ├── installation.md
-│   ├── first-run.md
-│   └── concepts.md
-├── guides/                    ← uso diario
-│   ├── user-guide.md
-│   ├── sessions.md
-│   ├── hooks-guide.md         ← auto-generado
-│   ├── governance.md
-│   ├── agent-memory.md
-│   └── faq.md
-├── reference/                 ← técnico / exhaustivo
-│   ├── agent-cli.md
-│   ├── capabilities-catalog.md ← auto-generado
-│   ├── profiles-catalog.md    ← auto-generado
-│   └── hooks-reference.md     ← auto-generado
-└── capabilities/              ← ficha por capacidad, por área
-    ├── common/
-    ├── git/
-    └── security/
-```
+| Documento | Contenido |
+|---|---|
+| [Referencia CLI](reference/agent-cli.md) | Comandos principales de `htx` |
+| [Catálogo de capacidades](reference/capabilities-catalog.md) | Las 53 capacidades registradas |
+| [Catálogo de perfiles](reference/profiles-catalog.md) | Los 6 perfiles incluidos en el motor |
+| [Catálogo de workflows](reference/workflows-catalog.md) | Los 5 workflows empaquetados |
+| [Guía de hooks](guides/hooks-guide.md) | Qué automatizan los hooks |
+| [Sesiones](guides/sessions.md) | Skills y subagentes temporales |
 
----
-
-*higpertext Engine v0.8.5 · auto-generado por `scripts/docs_maintenance.py`*
+*higpertext Engine v0.8.5*

@@ -23,7 +23,7 @@ Consulta la base de conocimiento de Gobernanza y Minutas para resolver dudas sob
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bcat\s+.*\.(md|json|yaml|yml|txt)\b`
+- **Comando Bash equivalente**: `cat README.md`
 - **Descripción**: Consultar documentación o gobernanza
 - **Ejemplo de reemplazo**: `htx task common.knowledge-asker --query "<pregunta>"`
 <!-- higpertext:generated-by=common.docs-sync -->

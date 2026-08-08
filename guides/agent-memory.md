@@ -67,7 +67,7 @@ Regenerado automáticamente por `memory-manager` tras cada acción. Contiene:
 ## Registrar una Acción Manualmente
 
 ```bash
-htx task memory-manager \
+htx task common.memory-manager \
     --action "Implementación del módulo de autenticación" \
     --status "success" \
     --notes "Se usó JWT con expiración de 1h. El refresh token se guarda en httpOnly cookie." \
@@ -78,7 +78,7 @@ htx task memory-manager \
 ### Registrar una Falla
 
 ```bash
-htx task memory-manager \
+htx task common.memory-manager \
     --action "Deploy a staging" \
     --status "failure" \
     --notes "El pipeline falló en el step de tests de integración." \
@@ -120,7 +120,7 @@ Este workflow ejecuta en secuencia:
 
 ```bash
 # Ver el resumen legible de las últimas acciones
-cat .memory/context.md
+htx task common.smart-read --path .memory/context.md
 
 # Buscar en la base de conocimiento (incluye memoria + gobernanza)
 htx ask "qué aprendimos sobre deployments fallidos"

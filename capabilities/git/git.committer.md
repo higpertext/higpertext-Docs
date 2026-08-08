@@ -29,7 +29,7 @@ Realiza un commit en Git siguiendo el estándar Conventional Commits y opcionalm
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bgit\s+commit\b`
+- **Comando Bash equivalente**: `git commit -m "<mensaje>"`
 - **Descripción**: Hacer un commit
 - **Ejemplo de reemplazo**: `htx task git.committer --message "<mensaje del commit>"`
 <!-- higpertext:generated-by=common.docs-sync -->

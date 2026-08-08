@@ -19,16 +19,16 @@ Referencia técnica exhaustiva de cada capacidad del higpertext Engine.
 
 Comandos bash interceptados automáticamente y redirigidos a su capacidad higpertext.
 
-| Patrón bash | Capacidad | Comando correcto |
+| Comando Bash | Capacidad | Equivalente higpertext |
 |---|---|---|
-| `\bwc\s+-l\b|\bfind\s+.*\.(py|ts|js|cs)\b` | `common.code-skeletonizer` | `htx task common.code-skeletonizer --path src/my_module.py` |
-| `\bpip\s+(install|uninstall|freeze)\b` | `common.dep-manager` | `htx task common.dep-manager --action install --packages requests` |
-| `\bgrep\b` | `common.grep-search` | `htx task common.grep-search --pattern "<patrón>" --path <ruta>` |
-| `\bcat\s+.*\.(md|json|yaml|yml|txt)\b` | `common.knowledge-asker` | `htx task common.knowledge-asker --query "<pregunta>"` |
-| `\bgit\s+commit\b` | `git.committer` | `htx task git.committer --message "<mensaje del commit>"` |
-| `\bgit\s+(diff|status|log)\b` | `git.diff` | `htx task git.git-diff --detail true` |
-| `(^|[;&|]\s*)ls(\s|$)|\bgit\s+ls-files\b` | `git.ls-files` | `htx task git.ls-files --path src --mode summary` |
-| `\bgit\s+rm\b` | `git.rm` | `htx task git.git-rm --files "<archivo1,archivo2>"` |
+| `find src -type f` | `common.code-skeletonizer` | `htx task common.code-skeletonizer --path src/my_module.py` |
+| `pip install requests` | `common.dep-manager` | `htx task common.dep-manager --action install --packages requests` |
+| `grep -R "<patrón>" <ruta>` | `common.grep-search` | `htx task common.grep-search --pattern "<patrón>" --path <ruta>` |
+| `cat README.md` | `common.knowledge-asker` | `htx task common.knowledge-asker --query "<pregunta>"` |
+| `git commit -m "<mensaje>"` | `git.committer` | `htx task git.committer --message "<mensaje del commit>"` |
+| `git diff` | `git.diff` | `htx task git.diff --detail true` |
+| `ls src` o `git ls-files` | `git.ls-files` | `htx task git.ls-files --path src --mode summary` |
+| `git rm <archivo>` | `git.rm` | `htx task git.rm --files "<archivo1,archivo2>"` |
 
 ---
 
@@ -114,7 +114,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Para Python debe utilizar la biblioteca 'ast' para un parsing sintáctico robusto.
   - Debe imprimir en la salida estándar la representación del esqueleto si no se especifica un archivo de salida.
 - **Hook de intercepción bash**:
-  - Patrón: `\bwc\s+-l\b|\bfind\s+.*\.(py|ts|js|cs)\b`
+  - Comando Bash: `find src -type f`
   - Acción: Explorar estructura de archivos de código
   - Comando correcto: `htx task common.code-skeletonizer --path src/my_module.py`
 
@@ -194,7 +194,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Nunca instalar como root o con sudo.
   - Después de instalar, actualizar requirements.txt si existe.
 - **Hook de intercepción bash**:
-  - Patrón: `\bpip\s+(install|uninstall|freeze)\b`
+  - Comando Bash: `pip install requests`
   - Acción: Gestionar dependencias del proyecto
   - Comando correcto: `htx task common.dep-manager --action install --packages requests`
 
@@ -417,7 +417,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Nunca debe exponer contenido de archivos de secretos (.env, secrets.json, *.key).
   - Con --all=true debe incluir directorios de agentes/configuración como .opencode, .claude, .agents y .gemini, pero nunca .git, .venv ni node_modules.
 - **Hook de intercepción bash**:
-  - Patrón: `\bgrep\b`
+  - Comando Bash: `grep -R "<patrón>" <ruta>`
   - Acción: Buscar en el código
   - Comando correcto: `htx task common.grep-search --pattern "<patrón>" --path <ruta>`
 
@@ -527,7 +527,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Si no se encuentra información, sugerir consultar al administrador de gobernanza.
   - Resumir los puntos clave de forma ejecutiva.
 - **Hook de intercepción bash**:
-  - Patrón: `\bcat\s+.*\.(md|json|yaml|yml|txt)\b`
+  - Comando Bash: `cat README.md`
   - Acción: Consultar documentación o gobernanza
   - Comando correcto: `htx task common.knowledge-asker --query "<pregunta>"`
 
@@ -970,7 +970,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - El mensaje de commit debe seguir Conventional Commits (prefijos válidos: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert).
   - Verificar cambios pendientes antes de realizar el commit.
 - **Hook de intercepción bash**:
-  - Patrón: `\bgit\s+commit\b`
+  - Comando Bash: `git commit -m "<mensaje>"`
   - Acción: Hacer un commit
   - Comando correcto: `htx task git.committer --message "<mensaje del commit>"`
 
@@ -989,9 +989,9 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Mostrar el listado de archivos clasificados por su estado en Git (Staged, Unstaged, Untracked).
   - Si el parámetro detail está activo, formatear el diff en un bloque markdown legible con sintaxis diff.
 - **Hook de intercepción bash**:
-  - Patrón: `\bgit\s+(diff|status|log)\b`
+  - Comando Bash: `git diff`
   - Acción: Ver diff/estado del repositorio
-  - Comando correcto: `htx task git.git-diff --detail true`
+  - Comando correcto: `htx task git.diff --detail true`
 
 ---
 
@@ -1028,7 +1028,7 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Debe emitir JSON parseable con total y files cuando json=true o mode=json.
   - Debe indicar total de archivos encontrados al final en salidas de texto.
 - **Hook de intercepción bash**:
-  - Patrón: `(^|[;&|]\s*)ls(\s|$)|\bgit\s+ls-files\b`
+  - Comando Bash: `ls src` o `git ls-files`
   - Acción: Listar archivos trackeados en el índice git
   - Comando correcto: `htx task git.ls-files --path src --mode summary`
 
@@ -1048,9 +1048,9 @@ Comandos bash interceptados automáticamente y redirigidos a su capacidad higper
   - Si un archivo no está trackeado, reportarlo como advertencia sin fallar.
   - Nunca eliminar archivos del sistema de archivos local (solo del índice).
 - **Hook de intercepción bash**:
-  - Patrón: `\bgit\s+rm\b`
+  - Comando Bash: `git rm <archivo>`
   - Acción: Remover archivos del índice git
-  - Comando correcto: `htx task git.git-rm --files "<archivo1,archivo2>"`
+  - Comando correcto: `htx task git.rm --files "<archivo1,archivo2>"`
 
 ---
 

@@ -26,7 +26,7 @@ Genera una versión 'esqueleto' de un archivo de código fuente (especialmente P
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bwc\s+-l\b|\bfind\s+.*\.(py|ts|js|cs)\b`
+- **Comando Bash equivalente**: `find src -type f`
 - **Descripción**: Explorar estructura de archivos de código
 - **Ejemplo de reemplazo**: `htx task common.code-skeletonizer --path src/my_module.py`
 <!-- higpertext:generated-by=common.docs-sync -->

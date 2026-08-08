@@ -74,16 +74,16 @@ automáticamente su intercepción sin tocar el hook.
 
 ## Hook Intercepts activos
 
-| Capacidad | Patrón interceptado | Descripción | Comando correcto |
+| Capacidad | Comando Bash | Descripción | Equivalente higpertext |
 |---|---|---|---|
-| `common.code-skeletonizer` | `\bwc\s+-l\b|\bfind\s+.*\.(py|ts|js|cs)\b` | Explorar estructura de archivos de código | `htx task common.code-skeletonizer --path src/my_module.py` |
-| `common.dep-manager` | `\bpip\s+(install|uninstall|freeze)\b` | Gestionar dependencias del proyecto | `htx task common.dep-manager --action install --packages requests` |
-| `common.grep-search` | `\bgrep\b` | Buscar en el código | `htx task common.grep-search --pattern "<patrón>" --path <ruta>` |
-| `common.knowledge-asker` | `\bcat\s+.*\.(md|json|yaml|yml|txt)\b` | Consultar documentación o gobernanza | `htx task common.knowledge-asker --query "<pregunta>"` |
-| `git.committer` | `\bgit\s+commit\b` | Hacer un commit | `htx task git.committer --message "<mensaje del commit>"` |
-| `git.diff` | `\bgit\s+(diff|status|log)\b` | Ver diff/estado del repositorio | `htx task git.git-diff --detail true` |
-| `git.ls-files` | `(^|[;&|]\s*)ls(\s|$)|\bgit\s+ls-files\b` | Listar archivos trackeados en el índice git | `htx task git.ls-files --path src --mode summary` |
-| `git.rm` | `\bgit\s+rm\b` | Remover archivos del índice git | `htx task git.git-rm --files "<archivo1,archivo2>"` |
+| `common.code-skeletonizer` | `find src -type f` | Explorar estructura de archivos de código | `htx task common.code-skeletonizer --path src/my_module.py` |
+| `common.dep-manager` | `pip install requests` | Gestionar dependencias del proyecto | `htx task common.dep-manager --action install --packages requests` |
+| `common.grep-search` | `grep -R "<patrón>" <ruta>` | Buscar en el código | `htx task common.grep-search --pattern "<patrón>" --path <ruta>` |
+| `common.knowledge-asker` | `cat README.md` | Consultar documentación o gobernanza | `htx task common.knowledge-asker --query "<pregunta>"` |
+| `git.committer` | `git commit -m "<mensaje>"` | Hacer un commit | `htx task git.committer --message "<mensaje del commit>"` |
+| `git.diff` | `git diff` | Ver diff/estado del repositorio | `htx task git.diff --detail true` |
+| `git.ls-files` | `ls src` o `git ls-files` | Listar archivos trackeados en el índice git | `htx task git.ls-files --path src --mode summary` |
+| `git.rm` | `git rm <archivo>` | Remover archivos del índice git | `htx task git.rm --files "<archivo1,archivo2>"` |
 
 ---
 

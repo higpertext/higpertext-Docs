@@ -43,7 +43,7 @@ Lista e inspecciona archivos trackeados por git como alternativa segura a ls/fin
 
 ## Intercepción de Bash
 
-- **Patrón**: `(^|[;&|]\s*)ls(\s|$)|\bgit\s+ls-files\b`
+- **Comando Bash equivalente**: `ls src` o `git ls-files`
 - **Descripción**: Listar archivos trackeados en el índice git
 - **Ejemplo de reemplazo**: `htx task git.ls-files --path src --mode summary`
 <!-- higpertext:generated-by=common.docs-sync -->

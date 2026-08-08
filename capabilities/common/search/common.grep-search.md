@@ -61,7 +61,7 @@ Busca patrones de texto, código o símbolos del grafo semántico Nexus/Higperte
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bgrep\b`
+- **Comando Bash equivalente**: `grep -R "<patrón>" <ruta>`
 - **Descripción**: Buscar en el código
 - **Ejemplo de reemplazo**: `htx task common.grep-search --pattern "<patrón>" --path <ruta>`
 <!-- higpertext:generated-by=common.docs-sync -->

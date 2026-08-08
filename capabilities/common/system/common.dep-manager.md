@@ -25,7 +25,7 @@ Gestiona dependencias del proyecto: instala, desinstala y lista paquetes usando 
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bpip\s+(install|uninstall|freeze)\b`
+- **Comando Bash equivalente**: `pip install requests`
 - **Descripción**: Gestionar dependencias del proyecto
 - **Ejemplo de reemplazo**: `htx task common.dep-manager --action install --packages requests`
 <!-- higpertext:generated-by=common.docs-sync -->

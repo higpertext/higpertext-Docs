@@ -1,80 +1,91 @@
-# Primer Arranque
+# Primer arranque
 
-Tres comandos para tener el asistente listo después de instalar.
+En tres pasos dejas tu proyecto listo para trabajar con un asistente. El motor no crea lógica de negocio: configura la integración y el perfil; tú y el agente trabajan sobre el código del proyecto.
 
-> Si quieres autocompletado, configúralo una sola vez durante la instalación:
-> `htx completion install` y luego `source ~/.bashrc`. Las actualizaciones no
-> requieren repetir `completion install`.
+## 1. Inicializa el proyecto
 
----
-
-## Paso 1 — Inicializar el workspace
+Desde la raíz del repositorio donde trabajarás:
 
 ```bash
-htx agent init --profile global
-
-# Después, genera la integración para el asistente elegido
-htx profile load global --assistant claude
+htx init --assistant codex
 ```
 
-Asistentes disponibles para `profile load`: `claude`, `gemini`, `opencode`, `copilot`, `antigravity`.
+Sustituye `codex` por `claude`, `gemini`, `opencode`, `copilot` o `antigravity` si corresponde. Este paso prepara los archivos de integración del asistente y el estado de higpertext; no modifica la lógica de tu aplicación.
 
-| Asistente | Archivos generados |
-|-----------|-------------------|
-| `claude` | `CLAUDE.md`, `.claude/rules/` |
-| `gemini` | `GEMINI.md`, `.gemini/rules/` |
-| `opencode` | `AGENTS.md`, `.opencode/rules/` |
-| `copilot` | `.github/copilot-instructions.md` |
+## 2. Carga un perfil
 
----
-
-## Paso 2 — Cargar un perfil
+Elige un perfil incluido en el motor y cárgalo para el mismo asistente:
 
 ```bash
-htx profile load software_developer --assistant claude
+htx profile load base_developer --assistant codex
 ```
 
-Perfiles disponibles:
+Perfiles incluidos:
 
-| Perfil | Especialidad |
-|--------|-------------|
-| `software_developer` | Desarrollo, Clean Code, TDD |
-| `devsecops` | Seguridad, vulnerabilidades, compliance |
-| `sre` | Kubernetes, postmortems, monitoreo |
-| `ado_admin` | Azure DevOps, pipelines, PRs |
-| `pwsh_engineer` | Scripts PowerShell |
+| Perfil | Úsalo cuando… |
+|---|---|
+| `global` | Necesitas capacidades transversales y orientación general |
+| `base_developer` | Vas a desarrollar, explorar código y aplicar prácticas de calidad |
+| `base_operator` | Vas a diagnosticar u operar servicios |
+| `base_auditor` | Vas a auditar seguridad, cumplimiento o calidad |
+| `base_agent` | Estás preparando la base de un agente externo |
+| `agent_designer` | Vas a crear o evolucionar un agente externo |
 
-Ver catálogo completo: [Catálogo de Perfiles](../reference/profiles-catalog.md)
+Los nombres como `sre`, `devsecops` o `software_developer` pertenecen a agentes externos si esos agentes los definen; no son perfiles incluidos por este motor.
 
----
+### Ejemplo: cargar el Agent Designer externo
 
-## Paso 3 — Iniciar sesión
+El agente externo diseñado para crear y mantener otros agentes vive en su
+propio repositorio: `https://github.com/higpertext/agent-designer.git`. Su
+perfil `agent_designer` vive en ese repositorio, no en el motor. No necesitas
+clonarlo ni cambiar de directorio: instala el perfil y sus recursos desde la
+URL en el proyecto ya inicializado y después cárgalo.
 
 ```bash
-htx task common.session-start
+# Desde la raíz de tu proyecto, después de htx init
+htx profile install agent_designer \
+  --source https://github.com/higpertext/agent-designer.git \
+  --target .
+
+htx profile load agent_designer --assistant codex
 ```
 
-Activa los comandos `/spec`, `/plan`, `/build`, `/review` en tu asistente.
-
-Al terminar el trabajo:
+`profile install` obtiene el perfil, capabilities, plantillas y reglas que ese
+agente expone y las incorpora al estado de tu proyecto; `profile load` lo
+activa para Codex.
+Con ello el Agent Designer queda listo para guiar la creación, activación y
+mantenimiento de otros agentes. Si quieres sus recursos temporales, abre una
+sesión después de cargar el perfil:
 
 ```bash
-htx task common.session-clean
+htx task common.session-start --action start --profile agent_designer
 ```
 
----
+No copies ese perfil al repositorio del motor: `--source` conserva la separación
+entre el motor y el agente externo.
 
-## Verificar instalación
+## 3. Empieza a trabajar
+
+El perfil ya deja al asistente con reglas y capacidades. Puedes empezar con una consulta o una tarea:
+
+```bash
+htx task common.list-rules
+htx task common.project-explainer --action explain --target_path .
+htx task common.search-router --intent "investigar un error" --query "mensaje de error"
+```
+
+Las sesiones son opcionales. Úsalas únicamente si necesitas montar skills, subagentes o los comandos de trabajo del asistente:
+
+```bash
+htx task common.session-start --action start
+# al terminar
+htx task common.session-clean --action clean
+```
+
+## Verificar
 
 ```bash
 htx task common.higpertext-tester
 ```
 
-Todos los contratos deben aparecer en verde ✓
-
----
-
-## Siguiente paso
-
-→ [Conceptos clave](concepts.md) — perfiles, capacidades, hooks y sesiones
-<!-- higpertext:generated-by=common.docs-sync -->
+→ [Conceptos clave](concepts.md) · [Agentes externos](external-agents.md)

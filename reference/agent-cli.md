@@ -1,125 +1,37 @@
-# Referencia CLI — `higpertext agent`
+# Referencia CLI
 
-Referencia completa del subcomando `agent` para gestionar agentes higpertext sin asistente.
-
----
-
-## Subcomandos
-
-```
-htx agent <subcomando> [opciones]
-```
-
-| Subcomando | Descripción |
-|------------|-------------|
-| `init` | Crea o actualiza el ambiente del agente |
-| `status` | Muestra el estado del ambiente actual |
-| `clean` | Elimina la sesión efímera |
-
----
-
-## `agent init`
-
-Crea la estructura completa del agente e inicializa su ambiente.
+## Flujo esencial
 
 ```bash
-htx agent init --profile <nombre> [--target <ruta>]
+htx init --assistant <codex|claude|gemini|opencode|copilot|antigravity>
+htx profile load <perfil> --assistant <asistente>
 ```
 
-| Parámetro | Requerido | Descripción |
-|-----------|-----------|-------------|
-| `--profile` | Sí | Nombre del perfil a activar |
-| `--target` | No | Ruta del directorio del agente (default: directorio actual) |
+`init` prepara la integración en el proyecto. `profile load` aplica un rol. Después de ambos comandos puedes empezar a trabajar; `session-start` no es obligatorio.
 
-**Qué hace:**
+## Comandos principales
 
-1. Crea la estructura `src/` si no existe
-2. Copia `agent_designer.json` a `src/config/profiles/`
-3. Genera `htx` launcher apuntando al motor (solo si no existe)
-4. Escribe `.higpertext/config/environment.json`
-5. Compila hook layers → `.higpertext/config/hooks_config.json`
-6. Actualiza `.higpertext/state/semantic_graph.md`
+| Comando | Uso |
+|---|---|
+| `htx init --assistant <asistente> [--target <ruta>]` | Inicializa la integración del asistente |
+| `htx profile load <perfil> --assistant <asistente> [--target <ruta>]` | Carga un perfil |
+| `htx task <capability-id> [parámetros]` | Ejecuta una capacidad |
+| `htx workflow run <workflow-id> [parámetros]` | Ejecuta un workflow |
+| `htx roadmap <new|add|list|remove>` | Gestiona roadmaps del proyecto |
+| `htx completion install` | Instala el autocompletado |
+| `htx health` / `htx doctor` | Comprueba el motor o el workspace |
 
-**Idempotente**: seguro de ejecutar múltiples veces. No sobreescribe `htx` ni `src/config/hooks/custom/`.
+## Gestión de agentes externos
 
-**Nombres reservados** (error si se usan como `--profile`):
+`htx agent` no integra un asistente: prepara y mantiene el estado compilado de un agente externo.
 
-```
-base_agent, agent_designer, global,
-base_developer, base_operator, base_auditor
-```
+| Comando | Uso |
+|---|---|
+| `htx agent init --profile <perfil> [--target <ruta>]` | Compila el ambiente del agente |
+| `htx agent status [--target <ruta>]` | Muestra su estado |
+| `htx agent clean [--target <ruta>]` | Elimina solo estado efímero |
+| `htx agent register --name <nombre> --path <ruta> --profile <perfil>` | Registra un agente |
+| `htx agent sync [--name <nombre>] [--assistant <asistente>]` | Sincroniza agentes registrados |
+| `htx agent list` | Lista agentes registrados |
 
-**Ejemplo:**
-```bash
-htx agent init --profile content_creator --target ../content-creator
-```
-
----
-
-## `agent status`
-
-Muestra el estado del ambiente del agente.
-
-```bash
-htx agent status [--target <ruta>]
-```
-
-**Output:**
-```
-── Agent Status ───────────────────────────
-  Perfil(es) : ['content_creator']
-  Entorno    : .higpertext/config/environment.json
-  Hooks      : compilados
-```
-
----
-
-## `agent clean`
-
-Elimina la sesión efímera sin borrar la configuración base.
-
-```bash
-htx agent clean [--target <ruta>]
-```
-
-Elimina `.higpertext/state/session.json`. No toca `src/`, `htx` ni `.higpertext/config/`.
-
----
-
-## Comparación con `init` y `profile load`
-
-| Comando | Asistente | Genera `.claude/` | Genera hooks | Crea `src/` |
-|---------|-----------|-------------------|--------------|-------------|
-| `init --assistant claude` | Requerido | Sí | Sí (nativos) | No |
-| `profile load` | Requerido | Sí | Sí (nativos) | No |
-| `agent init` | **No** | **No** | Sí (`.higpertext/`) | **Sí** |
-
-`agent init` es el punto de entrada para agentes que no se integran con un asistente específico, o que lo harán después con `profile load`.
-
----
-
-## Flujo típico de un agente nuevo
-
-```bash
-# 1. Crear el agente
-htx agent init --profile mi_perfil --target ../mi-agente
-
-# 2. Verificar
-htx agent status --target ../mi-agente
-
-# 3. Desarrollar (editar src/)
-# ...
-
-# 4. Recompilar tras cambios
-htx agent init --profile mi_perfil --target ../mi-agente
-
-# 5. Integrar con asistente (opcional, desde el agente)
-htx profile load mi_perfil --assistant claude
-```
-
----
-
-## Ver también
-
-- [Perfiles — Referencia](profiles-catalog.md) — catálogo de perfiles
-- [Catálogo de Capacidades](capabilities-catalog.md) — capacidades disponibles por área
+Para el ciclo completo, incluidos portabilidad y sincronización, consulta [Agentes externos](../getting-started/external-agents.md).

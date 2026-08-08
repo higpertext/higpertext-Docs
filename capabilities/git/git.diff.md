@@ -23,7 +23,7 @@ Detecta cambios locales en el repositorio Git (archivos modificados, eliminados,
 
 ## Intercepción de Bash
 
-- **Patrón**: `\bgit\s+(diff|status|log)\b`
+- **Comando Bash equivalente**: `git diff`
 - **Descripción**: Ver diff/estado del repositorio
-- **Ejemplo de reemplazo**: `htx task git.git-diff --detail true`
+- **Ejemplo de reemplazo**: `htx task git.diff --detail true`
 <!-- higpertext:generated-by=common.docs-sync -->
